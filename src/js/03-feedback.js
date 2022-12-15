@@ -9,7 +9,7 @@ elem.formEl.addEventListener("submit", onFormSubmit);
 elem.inputEl.addEventListener("input", throttle(onFormInput, 500));
 elem.textareaEl.addEventListener("input", throttle(onFormInput, 500));
 
-STORAGE_KEY = "feedback-form-state";
+const STORAGE_KEY = "feedback-form-state";
 const formData = {};
 
 function onFormSubmit(e) {
