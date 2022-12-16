@@ -10,19 +10,26 @@ elem.inputEl.addEventListener("input", throttle(onFormInput, 500));
 elem.textareaEl.addEventListener("input", throttle(onFormInput, 500));
 
 const STORAGE_KEY = "feedback-form-state";
-const formData = {};
+
+let formData = {};
+
+onGetInput();
 
 function onFormSubmit(e) {
   e.preventDefault();
+
   const email = elem.inputEl.value.trim();
   const message = elem.textareaEl.value.trim();
+
   if (!email) {
     alert("enter your email!");
     return;
+  } else {
   }
-  console.log({ email, message });
+  console.log(formData);
 
-  e.currentTarget.reset();
+  formData = {};
+  e.target.reset();
   localStorage.removeItem(STORAGE_KEY);
 }
 
@@ -32,22 +39,11 @@ function onFormInput(e) {
 }
 
 function onGetInput() {
-  try {
-    const savedMessage = localStorage.getItem(STORAGE_KEY);
-    if (savedMessage) {
-      return savedMessage ? JSON.parse(savedMessage) : null;
-    }
-  } catch (error) {
-    console.log(error.name); // "SyntaxError"
-    console.log(error.message); // Unexpected token W in JSON at position 0
+  let savedMessage = localStorage.getItem(STORAGE_KEY);
+  if (savedMessage) {
+    formData = JSON.parse(savedMessage);
+    console.log(formData);
+    elem.inputEl.value = formData.email || "";
+    elem.textareaEl.value = formData.message || "";
   }
 }
-
-function setInitData() {
-  const savedMessageParse = onGetInput();
-  if (savedMessageParse) {
-    elem.inputEl.value = savedMessageParse.email || "";
-    elem.textareaEl.value = savedMessageParse.message || "";
-  }
-}
-setInitData();
